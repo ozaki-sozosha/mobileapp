@@ -58,6 +58,7 @@ console.log(fruits.length);
 
 ## オブジェクト
 ```
+//オブジェクトの定義
 const scores = {
     math: 80,
     english: 75,
@@ -65,5 +66,11 @@ const scores = {
     history: 60,
 }
 console.log(scores);
+//要素の呼び出し
 console.log(scores.math);
+//要素の追加
+scores.japanese = 90;
+//要素の変更
+scores.math = 85;
+console.log(scores);
 ```
