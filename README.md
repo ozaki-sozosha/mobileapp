@@ -15,7 +15,7 @@ Webブラウザ上で動作するアプリ(インストール不要)
 カメラやGPSを制限付きで利用可能 
 HTML・CSS・JavaScriptで開発
 
-##　JavaScriptの総復習
+## JavaScriptの総復習
 - サーバーサイドプログラミングとクライアントサイドプログラミング
 - JavaScriptどこに書く
 - jQueryを使うメリットとデメリット
@@ -42,4 +42,28 @@ nullはオブジェクトがない事を示し、undefinedは値がない事を�
 | % | 余り算(剰余) | 100 % 50 | 
 | ** | べき乗 | 100 ** 2 | 
 
-### 配列とオブジェクト
+### 配列
+```
+//配列を定義
+const fruits = [];
+//末尾に要素を追加
+fruits.push("バナナ");
+fruits.push("リンゴ","イチゴ");
+console.log(fruits);
+//要素は0から始まる添え字で取得
+console.log(fruits[0]);
+//要素の数はlengthで取得
+console.log(fruits.length);
+```
+
+## オブジェクト
+```
+const scores = {
+    math: 80,
+    english: 75,
+    sience: 85,
+    history: 60,
+}
+console.log(scores);
+console.log(scores.math);
+```
