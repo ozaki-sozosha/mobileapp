@@ -144,6 +144,19 @@ for (let i = 0; i < 9; i++) {
 console.log(str);
 ```
 
+## イベント
+JavaScriptではブラウザ上でユーザーが起こすさまざまなイベントにより、プログラムが呼び出され実行される
+-ページ読み込み
+-マウスボタンのクリック
+-キーボード入力
+
+```
+//ページが読み込まれました
+document.addEventListener("DOMContentLoaded", (event) => {
+  console.log("Webページが読み込まれました");
+});
+```
+
 ## モダンJavaScript
 主にES6以降に導入された新しい文法を学ぶ
 
