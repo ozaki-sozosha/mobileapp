@@ -31,6 +31,19 @@ HTML・CSS・JavaScriptで開発
 
 nullはオブジェクトがない事を示し、undefinedは値がない事を示します。
 
+### 変数の宣言
+- let 再代入可
+- const 再代入不可
+```
+//letで宣言した変数は再代入してもエラーにならない
+let index = 0;
+index = 1;
+
+//constで宣言した変数は再代入するとエラー(TypeError)になる
+const students = ['山田', '田中', '太田'];
+students =  ['大河', '島田', '杉山'];
+```
+
 ### 算術演算子
 
 | 演算子 | 意味 | 例 |
@@ -73,4 +86,124 @@ scores.japanese = 90;
 //要素の変更
 scores.math = 85;
 console.log(scores);
+```
+
+### 関数
+- 繰り返し呼び出したい処理を登録する
+- 関数には引数リストを使って値を渡すことができる
+- return 文で呼び出し元に結果を渡すことができる
+- function 関数名(引数リスト){処理}
+```
+function square(number) {
+  return number * number;
+}
+console.log(square(4));
+```
+- 無名関数
+```
+//上の例は下記のようにも書ける
+const square = function(number){
+    return number * number;
+}
+```
+### 条件分岐
+```
+const num = 90;
+if （num > 80） {
+    console.log("numは80より大きいです。");
+}
+
+const num2 = 70;
+if （num2 > 80） {
+  console.log（"num2は80より大きいです。"）;
+} else {
+  console.log（"num2は80以下です。"）;
+}
+
+const num3 = 70;
+if （num3 > 80） {
+  console.log("num3は80より大きいです。");
+} else if （num3 >= 60） {
+  console.log（"num3は60～80の間です。"）;	
+} else {
+  console.log（"num3は60未満です。"）;
+}
+
+```
+
+### 繰り返し
+- 条件を満たすまで処理を繰り返す
+- for (カウンター変数; 条件; 増減の設定 )
+```
+let str = '';
+
+for (let i = 0; i < 9; i++) {
+  str = str + i;
+}
+
+console.log(str);
+```
+
+## モダンJavaScript
+主にES6以降に導入された新しい文法を学ぶ
+
+### テンプレート文字列
+文字列全体をはバッククォートで囲む、内包される変数は${}で囲む
+```
+const name = "山本";
+//従来の書き方
+const element1 = "<p class=\"profile\">"+name+"</p>";
+//テンプレート文字列を使う
+const element2 = `<p class="profile">${name}</p>`;
+```
+### アロー関数
+```
+// 従来の無名関数
+(function (a) {
+  return a + 100;
+});
+
+// 1. "function" を削除し、引数と本体の開始中括弧の間に矢印を配置する
+(a) => {
+  return a + 100;
+};
+
+// 2. 内容がreturnのみの場合、中括弧と "return" を削除可能。
+(a) => a + 100;
+
+// 3. 引数が１つのみの場合、引数リストの括弧を削除可能。
+a => a + 100;
+```
+
+### 分割代入
+```
+//配列の分割代入
+const array = [1, 2, 3, 4];
+let [x, y] = array;
+
+//オブジェクトの分割代入
+const obj = { b: 2, c: 3, d: 4 }
+let {a, b, c } = obj;
+```
+
+### forEach map filter 構文
+- foreachメソッド
+```
+const array1 = ['a', 'b', 'c'];
+//foreachメソッドはリストを全て出力する
+array1.forEach((element) => console.log(element));
+```
+- mapメソッド
+```
+const array1 = [1, 4, 9, 16];
+//mapメソッドは新しいリストを作成する
+const map1 = array1.map((x) => x * 2);
+console.log(map1);
+```
+- filterメソッド
+```
+const words = ['dog', 'rabbit', 'elephant', 'giraffe', 'rhinoceros'];
+//filterメソッドは条件に合格した値だけをリストとして複製する
+const result = words.filter((word) => word.length > 6);
+console.log(result);
 ```
