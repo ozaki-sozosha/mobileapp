@@ -99,7 +99,7 @@ function square(number) {
 }
 console.log(square(4));
 ```
-- 無名関数
+- 無名関数(名前を持たない関数)
 ```
 //上の例は下記のようにも書ける
 const square = function(number){
@@ -156,6 +156,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   console.log("Webページが読み込まれました");
 });
 ```
+
 
 ## モダンJavaScript
 主にES6以降に導入された新しい文法を学ぶ
@@ -219,4 +220,30 @@ const words = ['dog', 'rabbit', 'elephant', 'giraffe', 'rhinoceros'];
 //filterメソッドは条件に合格した値だけをリストとして複製する
 const result = words.filter((word) => word.length > 6);
 console.log(result);
+```
+
+### サンプル
+HTML
+```
+<div>
+    <ul id="main"></ul>
+</div>
+<button id="handle">実行</button>
+```
+
+JavaScript
+```
+const subjects = ['グラフィック専攻','イラストレーション専攻','インテリア専攻','Web専攻']
+//ボタンを取得
+button = document.querySelector("#handle");
+//ULタグを取得
+ulElement = document.querySelector("#main");
+console.log(ulElement)
+button.addEventListener('click',()=>{
+    subjects.forEach((subject)=>{
+        li_element = document.createElement('li')
+        li_element.innerHTML = subject;
+        ulElement.appendChild(li_element);
+    });
+});
 ```
