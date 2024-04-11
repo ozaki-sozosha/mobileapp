@@ -150,13 +150,54 @@ JavaScriptではブラウザ上でユーザーが起こすさまざまなイベ�
 -マウスボタンのクリック
 -キーボード入力
 
+ページが読み込まれました
 ```
-//ページが読み込まれました
+//JS
 document.addEventListener("DOMContentLoaded", (event) => {
   console.log("Webページが読み込まれました");
 });
 ```
+ドロップダウンが変更されました。
+```
+<!--HTML-->
+<select name="" id="choice">
+  <option value="">A</option>
+  <option value="">B</option>
+  <option value="">C</option>
+</select>
+```
+```
+//JS
+dropdownEle = document.querySelector("#choice");
+dropdownEle.addEventListener("change",(event)=>{
+    console.log(event.target.value);
+});
+```
+inputタグが変更されました
+```
+<!--HTML-->
+<input type="text" name="" id="myname">
+```
 
+```
+//JS
+inputEle = document.querySelector("#myname");
+inputEle.addEventListener("change",(event)=>{
+    console.log(event.target.value);
+});
+```
+ボタンクリック
+```
+<!--HTML-->
+<button id="handle">実行</button>
+```
+```
+//js
+button = document.querySelector("#handle");
+button.addEventListener('click',()=>{
+  alert("clickされました");
+}
+```
 
 ## モダンJavaScript
 主にES6以降に導入された新しい文法を学ぶ
