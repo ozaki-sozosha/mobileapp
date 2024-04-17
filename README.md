@@ -293,3 +293,34 @@ button.addEventListener('click',()=>{
 
 - [Bootstrap5](https://getbootstrap.jp/) 
 - [Bootstrap 5 CheatSheet](https://bootstrap-cheatsheet.themeselection.com/) 
+
+## Bootstrap with JavaScript
+HTML
+```
+<div>
+    <label for="myName" class="form-label">氏名</label>
+    <input type="text" name="myName" id="myName" class="form-control">
+</div>
+<button class="btn btn-primary disabled" id="submitBtn">送信</button>
+```
+
+JS
+```
+//inputタグを取得する
+myName = document.querySelector('#myName');
+//buttonタグを取得する
+submitBtn = document.querySelector('#submitBtn');
+//inputが変更されたら
+myName.addEventListener('change',(e)=>{
+    //4文字以上入力されたら
+    if(e.target.value.length > 4){
+        myName.classList.remove('is-invalid');
+        myName.classList.add('is-valid');
+        submitBtn.classList.remove('disabled');
+    }else{
+        myName.classList.remove('is-valid');
+        myName.classList.add('is-invalid');
+        submitBtn.classList.add('disabled');
+    }
+});
+```
