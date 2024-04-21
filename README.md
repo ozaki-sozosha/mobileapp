@@ -326,4 +326,4 @@ myName.addEventListener('change',(e)=>{
 ```
 
 ## JSONデータ活用
--　[お菓子の虜 Web API](https://sysbird.jp/toriko/webapi/)
+-　[Dog API](https://dog.ceo/dog-api/)
