@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+    <div id="main" class="row">
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const main = document.getElementById("main");
+        const url = 'https://dog.ceo/api/breed/hound/images/random/3';
+        axios.get(url)
+            .then((response)=>{
+                console.log(response);
+                showImage(response.data.message,main)
+            })
+            .catch((error)=>{
+                console.log(error);
+            });
+        const showImage = (imageList,div) =>{
+            imageList.forEach(imgfile => {
+                imgEle = document.createElement("div");
+                imgEle.classList.add('col');
+                bgi = `height:300px;background-image:url('${imgfile}');background-repeat: no-repeat;`
+                imgEle.innerHTML = '&nbsp;';
+                imgEle.setAttribute('style',bgi);
+                div.appendChild(imgEle);
+            });
+        }
+    </script>
+</body>
+</html>
