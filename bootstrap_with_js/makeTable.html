@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MakeTable</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">キャラクター一覧</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <label class="form-check-label" for="allchara">全て</label>
+                        <input type="radio" name="choice" id="allchara" class="form-check-input" value="all">
+                    </div>
+                    <div class="col">
+                        <label class="form-check-label" for="womenchara">女性</label>
+                        <input type="radio" name="choice" id="womenchara" class="form-check-input" value="women">
+                    </div>
+                    <div class="col">
+                        <label class="form-check-label" for="menchara">男性</label>
+                        <input type="radio" name="choice" id="menchara" class="form-check-input" value="men">
+                    </div>
+                    <div class="col">
+                        <label class="form-check-label" for="unKnown">不明</label>
+                        <input type="radio" name="choice" id="unKnown" class="form-check-input" value="unKnown">
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>名前</th>
+                    <th>性別</th>
+                </tr>
+            </thead>
+            <tbody id="showTable">
+
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded",()=>{
+            //キャラクターのData
+            characters = [
+                {"name":"キティちゃん","gender":"女性"},
+                {"name":"おでんくん","gender":"不明"},
+                {"name":"くれよんしんちゃん","gender":"男性"},
+                {"name":"ドラえもん","gender":"不明"},
+                {"name":"のびたくん","gender":"男性"},
+                {"name":"しずかちゃん","gender":"女性"},
+                {"name":"ジャイアン","gender":"男性"},
+                {"name":"ピカチュー","gender":"不明"},
+                {"name":"アンパンマン","gender":"不明"},
+                {"name":"ちびまるこちゃん","gender":"女性"},
+            ];
+            //ラジオボタン達を名前で取得
+            radioButtons = document.getElementsByName("choice");
+            radioButtons.forEach(btn => {
+                // ラジオボタンが押されるたび
+                btn.addEventListener("change",e=>{
+                    if(e.target.value == "all"){
+                        //全てが選択されたら
+                        makeTable(showTable,characters);
+                    }else if(e.target.value == "women"){
+                        //女性キャラリストをforeachで作成
+                        const womenCharacters = [];
+                        characters.forEach(c=>{
+                            if(c.gender == "女性"){
+                                womenCharacters.push(c);
+                            }
+                        });
+                        makeTable(showTable,womenCharacters);
+                    }else if(e.target.value == "men"){
+                        //男性キャラリストをfilterメソッドで作成
+                        const menCharacters = characters.filter(c=>c.gender == "男性");
+                        console.log(menCharacters);
+                        makeTable(showTable,menCharacters);
+                    }else{
+                        //性別不明のキャラリストをfilterメソッドで作成
+                        const genderlessCharacters = characters.filter(c=>c.gender == "不明");
+                        makeTable(showTable,genderlessCharacters);
+                    }
+                });
+            });
+            //全表示をする
+            const showTable = document.getElementById("showTable");
+            //テーブルを生成する関数
+            const makeTable = (targetTable,targetData)=>{
+                //全行削除
+                const counter = targetTable.children.length;
+                for(let i = 0; i < counter; i++){
+                    targetTable.removeChild(targetTable.children[0]);
+                }
+                //データからTR>TDを追加
+                targetData.forEach((c)=>{
+                    // TRを作成
+                    const trEle = document.createElement("tr");
+
+                    //TR(行)に背景色を設定
+                    if(c.gender == "男性"){
+                        trEle.classList.add("table-info");
+                    }else if(c.gender == "女性"){
+                        trEle.classList.add("table-danger");
+                    }else{
+                        trEle.classList.add("table-warning");
+                    }
+
+                    // TDを作成
+                    let tdEle1 = document.createElement("td");
+                    tdEle1.innerText = c.name;
+                    // TRにTDを追加
+                    trEle.appendChild(tdEle1);
+                    // TDを作成
+                    let tdEle2 = document.createElement("td");
+                    tdEle2.innerText = c.gender;
+                    // TRにTDを追加
+                    trEle.appendChild(tdEle2);
+                    
+                    //テーブルにTRを追加
+                    targetTable.appendChild(trEle);
+                });
+            }
+            
+            //初回は全表示(初期値)
+            makeTable(showTable,characters);
+            //allのradiobtnにチェックを入れる(初期値)
+            const allchara = document.querySelector("#allchara");
+            allchara.checked = true;
+        });
+
+    </script>
+</body>
+</html>

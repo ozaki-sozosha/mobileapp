@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">重要事項</div>
+            <div class="card-body">
+                <p>ここに説明が入ります。</p>
+                <input type="checkbox" class="form-check-input" name="readed" id="readed" value="1">読みました
+            </div>
+        </div>
+        <button class="btn btn-secondary disabled" id="sub">同意</button>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded",()=>{
+            const readed = document.querySelector("#readed");
+            const sub = document.querySelector("#sub");
+            readed.addEventListener("change",()=>{
+                if(readed.checked){
+                    //checkがオンの時
+                    sub.classList.remove("disabled");
+                    sub.classList.remove("btn-secondary");
+                    sub.classList.add("btn-primary");
+                }else{
+                    //checkがオフの時
+                    sub.classList.add("disabled");
+                    sub.classList.remove("btn-primary");
+                    sub.classList.add("btn-secondary");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
