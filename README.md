@@ -343,8 +343,9 @@ navigator.geolocation.getCurrentPosition((position)=>{
 ```
 
 ```
+//地図サービスで位置座標を反映
 https://www.openstreetmap.org/#map=18/緯度/経度
 ```
 - [GPS動作例](https://studioham.net/sozosha_gps/)
 
-<img src="GPS/QR.png" width="300px">
+<img src="GPS/QR.png" width="200px">
