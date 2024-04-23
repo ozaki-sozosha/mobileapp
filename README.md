@@ -347,4 +347,4 @@ https://www.openstreetmap.org/#map=18/緯度/経度
 ```
 - [GPS動作例](https://studioham.net/sozosha_gps/)
 
-![QR](GPS/QR.png "動作例")
+<img src="GPS/QR.png" width="300px">
