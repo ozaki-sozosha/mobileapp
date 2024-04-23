@@ -327,3 +327,22 @@ myName.addEventListener('change',(e)=>{
 
 ## JSONデータ活用
 -　[Dog API](https://dog.ceo/dog-api/)
+
+## GPS(Geo Location)
+```
+console.log(navigator);
+//navigator内にgeolocationの有無を確認
+```
+
+```
+// 現在位置の取得
+navigator.geolocation.getCurrentPosition((position)=>{
+    console.log(`緯度:${position.coords.latitude}`);
+    console.log(`経度:${position.coords.longitude}`);
+});
+```
+
+```
+https://www.openstreetmap.org/#map=18/緯度/経度
+```
+- [GPS動作例](https://studioham.net/sozosha_gps/)
