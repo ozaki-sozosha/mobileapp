@@ -351,4 +351,6 @@ https://www.openstreetmap.org/#map=18/緯度/経度
 <img src="GPS/QR.png" width="200px">
 
 ## 提出課題のテンプレート
-kadaiディレクトリを確認してください。
+
+[kadaiディレクトリを確認してください](https://github.com/ozaki-sozosha/mobileapp/tree/main/kadai)
+
