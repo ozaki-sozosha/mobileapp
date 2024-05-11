@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>近くのお店検索</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link href="https://use.fontawesome.com/releases/v6.2.0/css/all.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">近くのお店検索</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <label class="form-check-label fs-6" for="it">イタリアン</label>
+                        <input type="radio" name="choice" id="it" class="form-check-input" value="G006">
+                    </div>
+                    <div class="col">
+                        <label class="form-check-label fs-6" for="ch">中華</label>
+                        <input type="radio" name="choice" id="ch" class="form-check-input" value="G007">
+                    </div>
+                    <div class="col">
+                        <label class="form-check-label fs-6" for="kor">韓国</label>
+                        <input type="radio" name="choice" id="kor" class="form-check-input" value="G017">
+                    </div>
+                    <div class="col">
+                        <label class="form-check-label fs-6" for="iz">居酒屋</label>
+                        <input type="radio" name="choice" id="iz" class="form-check-input" value="G001">
+                    </div>
+                    <div class="col">
+                        <label class="form-check-label fs-6" for="ra">ラーメン</label>
+                        <input type="radio" name="choice" id="ra" class="form-check-input" value="G013">
+                    </div>
+                </div>
+                <button class="btn btn-outline-primary" id="gps">お店を検索</button>
+            </div>
+        </div>
+
+        <div class="main">
+            <!-- お店の一覧 -->
+            <div id="dataTable">
+                <h2>お店の一覧</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>店名</th>
+                            <th>詳細</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody" class="">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- お店の詳細 -->
+            <div class="dataDetail">
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded",()=>{
+            //ジャンルが保存される変数
+            let genre = "G013";
+            //GPSボタン
+            gpsButton = document.querySelector("#gps");
+            //詳細表示エアリアを隠す
+            const dataDetail = document.querySelector(".dataDetail");
+            //一覧表示エリア
+            const dataTable = document.querySelector("#dataTable");
+            //データ表示エリア
+            const dataTableBody = document.querySelector("#dataTableBody");
+            //ラジオボタン達を名前で取得
+            radioButtons = document.getElementsByName("choice");
+            radioButtons.forEach(btn => {
+                // ラジオボタンが押されるたび
+                btn.addEventListener("change",e=>{
+                    genre = e.target.value
+                });
+            });
+            //GPSボタンクリック
+            gpsButton.addEventListener("click",()=>{
+
+                //GPSを取得する
+                navigator.geolocation.getCurrentPosition((position)=>{
+                    console.log(`緯度:${position.coords.latitude}/経度:${position.coords.longitude}`);
+                    //axiosで通信
+                    axios.get('https://takujiozaki.com/geolocations/hotpepper_open.php',{
+                        params: {
+                            key:'5d63b53c5db37458',
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                            range:5, //範囲
+                            genre:genre,//ジャンル
+                            count:15,//取得数
+                        }
+                    })
+                    // 成功した時
+                    .then((response)=>{
+                        console.log(response.data.results.shop);
+                        makeTable(response.data.results.shop,dataTableBody,dataTable)
+                        //画面の切り替え
+                        dataDetail.classList.add("d-none");
+                        dataTable.classList.remove("d-none");
+                    })
+                    // 失敗した時
+                    .catch((error)=>{
+                        console.log(error);
+                    });
+                });
+            });
+
+            //一覧表示テーブル
+            const makeTable = (data,dataTableBody,dataTable) =>{
+                while( dataTableBody.firstChild ){
+                    dataTableBody.removeChild( dataTableBody.firstChild );
+                }
+                data.forEach((shop) => {
+                    const trElement = document.createElement("tr");
+                    const tdElement = document.createElement("td");
+                    tdElement.innerText = shop.name;
+                    const tdElement2 = document.createElement("td");
+                    const detailBtn = document.createElement("button");
+                    detailBtn.innerText="詳細";
+                    detailBtn.classList.add("btn","btn-primary","btn-sm");
+                    detailBtn.addEventListener("click",()=>{
+                        //クリックされたら詳細画面に移動
+                        showDetail(shop,dataDetail,dataTable);
+                        //一覧を隠す
+                        dataTable.classList.add("d-none");
+                    });
+                    tdElement2.appendChild(detailBtn);
+                    trElement.appendChild(tdElement);
+                    trElement.appendChild(tdElement2);
+                    dataTableBody.appendChild(trElement);  
+                });
+            }
+
+            //詳細画面表示
+            const showDetail = (shop,dataDetail,dataTable) =>{
+                //ulタグを削除
+                while( dataDetail.firstChild ){
+                    dataDetail.removeChild( dataDetail.firstChild );
+                }
+                //見出しタグを追加(例はh2)
+                const hElement = document.createElement("h2");
+                hElement.innerText = "お店の詳細"
+                dataDetail.appendChild(hElement);
+                divEle = document.createElement("div");
+                divEle.classList.add("text-center");
+                //img
+                imgEle = document.createElement("img");
+                imgEle.setAttribute("src",shop.photo.mobile.l);
+                divEle.appendChild(imgEle)
+                dataDetail.appendChild(divEle);
+                //お店の詳細を箇条書きで追加
+                //ulタグを作成
+                const ulElement = document.createElement("ul");
+                ulElement.classList.add("list-group")
+                //liタグを作成(3個)
+                const liElement1 = document.createElement("li");
+                liElement1.innerText = `${shop.genre.catch}`;//shopid
+                liElement1.classList.add("list-group-item")
+                ulElement.appendChild(liElement1);
+                const liElement2 = document.createElement("li");
+                liElement2.innerText = `${shop.name} (${shop.id})`;//店名
+                liElement2.classList.add("list-group-item")
+                ulElement.appendChild(liElement2);
+                const liElement3 = document.createElement("li");
+                liElement3.innerText = shop.address;//住所
+                liElement3.classList.add("list-group-item")
+                ulElement.appendChild(liElement3);
+                dataDetail.appendChild(ulElement);
+                const liElement5 = document.createElement("li");
+                liElement5.innerText = `営業:${shop.open}`;//住所
+                liElement5.classList.add("list-group-item")
+                ulElement.appendChild(liElement5);
+                const liElement4 = document.createElement("li");
+                liElement4.innerText = `ご予算:${shop.budget.name}`;//住所
+                liElement4.classList.add("list-group-item")
+                ulElement.appendChild(liElement4);
+                dataDetail.appendChild(ulElement);
+                //Map領域を表示
+                const mapArea = document.createElement("div");
+                mapArea.setAttribute("id",'map');
+                mapArea.style.height = "180px";
+                mapArea.style.width = "360px";
+                mapArea.style.marginLeft = "auto";
+                mapArea.style.marginRight = "auto";
+                mapArea.style.border = "solid 1px #666";
+                dataDetail.appendChild(mapArea);
+                //読み込み中を表示
+                const loading = document.createElement("div");
+                loading.setAttribute("id","loading");
+                loading.classList.add("spinner-border");
+                loading.classList.add("text-primary"); 
+                dataDetail.appendChild(loading);
+                setTimeout(()=>{
+                    //読み込み中を消す
+                    const loadingDiv = document.querySelector("#loading");
+                    loadingDiv.remove();
+                    //地図を読み込む
+                    const map = L.map('map').setView([shop.lat, shop.lng], 13);
+                    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    }).addTo(map);
+                    map.invalidateSize();
+                    L.marker([shop.lat, shop.lng]).addTo(map);
+                },1000);
+                
+                //閉じるボタン
+                const divEle2 = document.createElement("div");
+                divEle2.classList.add("text-end");
+                const closeBtn = document.createElement("button");
+                closeBtn.innerText = "閉じるx";
+                closeBtn.classList.add("btn","btn-outline-secondary");
+                closeBtn.addEventListener("click",()=>{
+                    dataDetail.classList.add("d-none");
+                    dataTable.classList.remove("d-none");
+                });
+                divEle2.appendChild(closeBtn)
+                dataDetail.appendChild(divEle2);
+                //表示を切り返る
+                dataDetail.classList.remove("d-none");
+            }
+
+            //居酒屋のradiobtnにチェックを入れる(初期値)
+            const ra = document.querySelector("#ra");
+            ra.checked = true;
+        });
+
+        
+    </script>
+</body>
+</html>
